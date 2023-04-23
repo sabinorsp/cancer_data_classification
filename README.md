@@ -1,7 +1,7 @@
 cancer_data_classification
 ==============================
 
-This project are about a construct a exploratory data analysis, preprocessing and training a classification model to preditic the cancer with benign  (B) and malignant (M). The model are deploy into a web application contruct by FastAPI. 
+This project are about a construct a exploratory data analysis, preprocessing and training a classification model to preditic the cancer with benign  (B) and malignant (M). The model are deploy into a web application with FastAPI. 
 .
 
 Project Organization
