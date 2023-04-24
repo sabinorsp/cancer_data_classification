@@ -1,4 +1,4 @@
-# Exploratory Data Analisys:
+# Exploratory Data Analysis:
 
 ## About the project and data: 
 
