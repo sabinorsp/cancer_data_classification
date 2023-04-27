@@ -11,3 +11,15 @@
 ### Correlations and Distributions
 
 ## About Formulating Questions: 
+
+# Models
+
+## Pre-Processing
+
+## Select Models
+
+## Traning models 
+
+# Evaluation models
+
+# Conclusions
