@@ -13,7 +13,7 @@ O conjunto original do dataset é composto por 30 colunas/caracteristicas e 570 
 O conjunto de dados não possui valores ausentes ou valores duplicados, conforme observado na imagem abaixo. 
 
 <p align="center">
-  <img src="/figures/fig1-missing-value.png">
+  <img src="figures/fig1-missing-values.png">
 </p>
 
 
