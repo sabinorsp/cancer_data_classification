@@ -13,7 +13,7 @@ O conjunto original do dataset é composto por 30 colunas/caracteristicas e 570 
 O conjunto de dados não possui valores ausentes ou valores duplicados, conforme observado na imagem abaixo. 
 
 <p align="center">
-  <img src="figures/fig1-missing-values.png" width="500" height="300">
+  <img src="figures/fig1-missing-values.png" width="700" height="400">
 </p>
 
 As variáveis id e Unnamed não são representativas para as análises e modelos, portanto serão excluidas. Para a variável alvo `diagnosis` será feito a mudança das classes pelo seguinte acordo:  
@@ -62,13 +62,13 @@ Como podemos notar, não foi retornado nenhum valor. Portanto rejeitamos a hipot
 * Simetria:
 
 <p align="center">
-  <img src="fig2-skewness.png" width="500" height="300">
+  <img src="figures/fig2-skewness.png" width="700" height="400">
 </p>
 
 * Curtosi:
 
 <p align="center">
-  <img src="figures/fig3-kurtosis.png" width="500" height="300">
+  <img src="figures/fig3-kurtosis.png" width="700" height="400">
 </p>
 
 Para criar uma visualização da distribuição dos dados, como há muitas variáveis e também diferentes tipos de escalas, vamos dividir em grupos de semelhança de acordo com suas médias. Portanto iremos criar os seguintes grupos: 
@@ -90,24 +90,53 @@ Segue o plot de violino para as variáveis a seguir:
   <img src="figures/heat-map-correlations.png" width="550" height="450">
 </p>
 
-O mapa de calor mostra que há a presença de várias colunas com alto grau de correlação. Esse fator gera redundancia de informação ou multicolinearidade o que prejudica a identificação de importancia das variáveis para predizer o alvo quando treinado o modelo.
+O mapa de calor mostra que há a presença de várias colunas com alto grau de correlação. Esse fator gera redundancia de informação ou multicolinearidade o que prejudica a identificação de importancia das variáveis para predizer o alvo quando treinado o modelo. O que pode explicar a alta correção entre as variáveis é devido praticamente todas serem derivadas de uma caracteristica geométrica da célula. 
 
 Para uma representação gráfica das relações entre as multiplas variáveis temos o plot RadViz: 
 
 <p align="center">
-  <img src="figures/radviz-30-features.png" width="550" height="450">
+  <img src="figures/radviz-30-features.png" width="900" height="500">
 </p>
 
+Com o objetivo de reduzir essa multicolinearidade, iremos realizar o filtro para colunas que possuem alta correção, acima de 0.95 e excluir a colinearidade escolhendo somente um grupo de colunas para permanecer no conjunto de dados. Será criado um novo dataset para essa transformação e ficará salvo em data2 para etapas posteriores de preprocessamento e treinamento de modelos. 
+
+A seguir as colunas que apresentam uma alta taxa de correlação: 
+
+```python
+correleted_columns = correlated_columns(data.drop('diagnosis', axis=1))
+correleted_columns
+```
+           level_0          level_1   pearson
+    0    perimeter_mean      radius_mean  0.997855
+    1         area_mean      radius_mean  0.987357
+    2         area_mean   perimeter_mean  0.986507
+    3      perimeter_se        radius_se  0.972794
+    4           area_se        radius_se  0.951830
+    5      radius_worst      radius_mean  0.969539
+    6      radius_worst   perimeter_mean  0.969476
+    7      radius_worst        area_mean  0.962746
+    8   perimeter_worst      radius_mean  0.965137
+    9   perimeter_worst   perimeter_mean  0.970387
+    10  perimeter_worst        area_mean  0.959120
+    11  perimeter_worst     radius_worst  0.993708
+    12       area_worst        area_mean  0.959213
+    13       area_worst     radius_worst  0.984015
+    14       area_worst  perimeter_worst  0.977578
 
 
-# Models
+```python
+# Create a second dataset data2 with contain the drop about correlated columns level1
+data2 = data.drop(correleted_columns.level_1.unique(), axis=1)
+```
 
-## Pre-Processing
+Portanto ficamos com dois modelos de dados para a etapa de pre-processamento e treinamento dos modelos. Os datasets que sofreram transformações ficaram salvos no diretório `./data/`. 
 
-## Select Models
+### Sobre o balanceamento de classe variável alvo: 
 
-## Traning models 
+Para verificação do balanço de classe na variável alvo temos: 
 
-# Evaluation models
+<p align="center">
+  <img src="figures/balance_diagnosis.png" width="500" height="400">
+</p>
 
-# Conclusions
+#End
