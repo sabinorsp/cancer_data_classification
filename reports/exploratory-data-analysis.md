@@ -129,7 +129,9 @@ correleted_columns
 data2 = data.drop(correleted_columns.level_1.unique(), axis=1)
 ```
 
-Portanto ficamos com dois modelos de dados para a etapa de pre-processamento e treinamento dos modelos. Os datasets que sofreram transformações ficaram salvos no diretório `./data/`. 
+Portanto ficamos com dois modelos de dados para a etapa de pre-processamento e treinamento dos modelos. Os datasets que sofreram transformações ficaram salvos no diretório `./data/interim`. 
+  * `data.csv`: Não contém colunas `id`, alteração classes `diagnosis` para (0,1).  
+  * `data2.csv`: Cópia de `data.csv` com a exclusão de colunas com altas correlações.   
 
 ### Sobre o balanceamento de classe variável alvo: 
 
@@ -139,4 +141,4 @@ Para verificação do balanço de classe na variável alvo temos:
   <img src="figures/balance_diagnosis.png" width="500" height="400">
 </p>
 
-#End
+# END
