@@ -56,7 +56,39 @@ Para o conjunto de dados `data.csv` 9 variáveis apresentaram destaque no grau d
 * Variável alvo: 
     * y_train.csv
     * y_test.csv
+
+Com todos os conjuntos de dados previamente processados, iremos prosseguir para a construções dos modelos, seleções e suas avaliações.
+
 ## Select Models
+
+Para realizarmos a seleção do modelo de acordo com cada agrupamento de dados, os que foram feito seleção de variáveis e os que permaneceram com todas as variáveis dado os dois sub conjunto de dados em `data.csv`e `data2.csv` será realizado a divisão e nomeado em dois grupos principais de modelos: Grupo Alpha para todos os dados referente a `data.csv` e Grupo  Beta para todos em `data2.csv`. 
+
+Em todos os casos será aplicado a cross-validation sobre os dados de treinamento com avaliação sobre a métrica AUC scoring, utilizando o método k-fold com n_splits=10 para a lista de modelos a seguir: 
+
+```python
+models = [RandomForestClassifier, 
+          MultinomialNB, 
+          LogisticRegression,
+          KNeighborsClassifier,
+          xgb.XGBClassifier,
+          SVC]
+```
+Função para a aplicação da cross-validation:
+
+```python 
+def evaluate_models(models, X_train, y_train):
+    for model in models:
+        cls = model()
+        kfold = KFold(n_splits=10, random_state=42, shuffle=True)
+        s = cross_val_score(cls, X_train, y_train, scoring='roc_auc', cv=kfold)
+        print(f"{model.__name__:22} AUC: "
+              f"{s.mean():.3f} STD: {s.std():.2f}")
+```
+
+A seguir segue os resultados de acordo com o agrupamento dos modelos Alpha e Beta:
+
+
+
 
 ## Traning models 
 
