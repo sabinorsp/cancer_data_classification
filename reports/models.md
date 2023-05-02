@@ -87,11 +87,114 @@ def evaluate_models(models, X_train, y_train):
 
 A seguir segue os resultados de acordo com o agrupamento dos modelos Alpha e Beta:
 
+### Modelos grupo Alpha: 
 
+```python
+# All data: X_train.
+RandomForestClassifier AUC: 0.988 STD: 0.02
+MultinomialNB          AUC: 0.936 STD: 0.04
+LogisticRegression     AUC: 0.994 STD: 0.01
+KNeighborsClassifier   AUC: 0.988 STD: 0.02
+XGBClassifier          AUC: 0.994 STD: 0.01
+SVC                    AUC: 0.995 STD: 0.01
+```
+  
+```python
+# Feature data: X_train_feature.
+RandomForestClassifier AUC: 0.984 STD: 0.02
+MultinomialNB          AUC: 0.852 STD: 0.07
+LogisticRegression     AUC: 0.986 STD: 0.02
+KNeighborsClassifier   AUC: 0.976 STD: 0.02
+XGBClassifier          AUC: 0.982 STD: 0.02
+SVC                    AUC: 0.986 STD: 0.02
+```
 
+### Modelos grupo Beta:
+
+```python
+# All data: X_train2
+RandomForestClassifier AUC: 0.994 STD: 0.01
+MultinomialNB          AUC: 0.962 STD: 0.03
+LogisticRegression     AUC: 0.988 STD: 0.02
+KNeighborsClassifier   AUC: 0.979 STD: 0.03
+XGBClassifier          AUC: 0.995 STD: 0.01
+SVC                    AUC: 0.994 STD: 0.01
+```
+
+```python
+# Feature data: X_train2_feature
+RandomForestClassifier AUC: 0.989 STD: 0.01
+MultinomialNB          AUC: 0.736 STD: 0.10
+LogisticRegression     AUC: 0.973 STD: 0.04
+KNeighborsClassifier   AUC: 0.967 STD: 0.04
+XGBClassifier          AUC: 0.988 STD: 0.01
+SVC                    AUC: 0.985 STD: 0.02
+```
+
+Contudo, os modelos ensamble apresentaram bons desempenhos os praticamente todos os casos, os modelos que foram selecionados para treinamentos e otimizações de parametros foram: RandomForest, SVC e XGBC. A seguir apresentamos os parametros encontrados na otimização.
 
 ## Traning models 
 
-# Evaluation models
+Para a etapa de otimização dos parametros dos modelos, neste caso, utilizamos GridSearch, onde será criado um modelo para cada combinação de parametros e selecionado o melhor. A escolha de aplicar este método para esse caso foi pela simplicidade e também pelo tamanho dos dados disponíveis para treinamento. Observando que para modelos mais complexos com superiores quantidades de dados, outros métodos de otimização randomica passam a ser mais interessantes. 
+
+### Parametros para modelos Grupo Alpha: 
+
+```python
+# RandomForest to X_train
+{'criterion': 'gini', 'max_features': 'log2', 'n_estimators': 200}
+Model Saved: ../models/model_alpha_rf.pkl
+
+# RandomForest to X_train_feature
+{'criterion': 'entropy', 'max_features': 'sqrt', 'n_estimators': 100}
+Model Saved: ../models/model_alpha_rf_feature.pkl
+
+# XGBC to X_train
+{'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 150, 'subsample': 0.5}
+Model Saved: ../models/model_alpha_xgb.pkl
+
+# XGBC to X_train_feature
+{'learning_rate': 0.001, 'max_depth': 3, 'n_estimators': 150, 'subsample': 0.5}
+Model Saved: ../models/model_alpha_xgb_feature.pkl
+
+# SVC to X_train
+{'C': 10, 'degree': 2, 'kernel': 'rbf'}
+Model Saved: ../models/model_alpha_svc.pkl
+
+# SVC to X_train_feature
+{'C': 10, 'degree': 2, 'kernel': 'poly'}
+Model Saved: ../models/model_alpha_svc_feature.pkl
+```
+
+### Parametros para modelos Grupo Beta:
+
+```python
+# RandomForest to X_train2
+{'criterion': 'entropy', 'max_features': 'sqrt', 'n_estimators': 100}
+Model Saved: ../models/model_beta_rf.pkl
+
+# RandomForest to X_train2_feature
+{'criterion': 'gini', 'max_features': 'sqrt', 'n_estimators': 200}
+Model Saved: ../models/model_beta_rf_feature.pkl
+
+# XGBC to X_train2
+{'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 150, 'subsample': 0.5}
+Model Saved: ../models/model_beta_xgb.pkl
+
+# XGBC to X_train2_feature
+{'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 100, 'subsample': 0.5}
+Model Saved: ../models/model_beta_xgb_feature.pkl
+
+# XGBC to X_train2
+{'C': 10, 'degree': 2, 'kernel': 'rbf'}
+Model Saved: ../models/model_beta_svc.pkl
+
+#XGBC to X_train2_feature
+{'C': 10, 'degree': 2, 'kernel': 'rbf'}
+Model Saved: ../models/model_beta_svc_feature.pkl
+```
+Definido os melhores parametros para esse grupo de configurações, os modelos foram treinados com os dados de treino de seus respectivos grupos e salvos em suas versões .pkl. A seguir os modelos foram carregados e avaliados com seus respectivos dados de testes. 
+
+## Evaluation models
+
 
 # Conclusions
