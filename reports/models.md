@@ -3,7 +3,7 @@
 
 ## Pre-Processing
 
-Foi utilizado 20% dos dados para divisão dos dados de teste, conforme a seguir: 
+20% of the data was used to split the test data, as follows:
 
 ```python
 # Split train and test data
@@ -11,7 +11,7 @@ X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2, random_st
 X_train2, X_test2= train_test_split(X_2,test_size=0.2, random_state=40)
 ```
 
-Foi aplicado para todas as variáveis a normalização usando o `MinMaxScaler` do pacote `scikit-learn`.
+Normalization using the `MinMaxScaler` package from `scikit-learn` was applied to all variables.
 
 ```python
 # Apply standard to each X's data: 
@@ -21,9 +21,9 @@ X_test_scaler = scaler.fit_transform(X_test)
 X_train_scaler2 = scaler.fit_transform(X_train2)
 X_test_scaler2 = scaler.fit_transform(X_test2)
 ```
-Os dados ficaram portanto divididos em 4 subsets para o treinamento e teste, sendo os respectivos dados para cada grupo de dados `data.csv` e `data2.csv`. 
+Therefore, the data was divided into 4 subsets for training and testing, with the respective data for each data group being `data.csv` and `data2.csv`.
 
-A seguir foi realizado a seleção de variáveis utilizando a seleção das melhores importancias com o uso do RandomForest com critério gini, calculando a média de todas importancias e selecionando as variaveis que possuem valores acima dessa média. Os resutlados podem ser observados conforme as figuras abaixo:  
+Next, variable selection was performed using the selection of the best importances with the use of RandomForest with gini criteria, calculating the average of all importances and selecting the variables that have values above this average. The results can be observed in the figures below: 
 
 * X_train - data.csv:
 
@@ -37,7 +37,7 @@ A seguir foi realizado a seleção de variáveis utilizando a seleção das melh
   <img src="figures/feature_data2.png" width="500" height="400">
 </p>
 
-Para o conjunto de dados `data.csv` 9 variáveis apresentaram destaque no grau de importancia contra 7 variáveis para o `data2.csv`. Os respectivos dados de treinamento e teste para cada conjunto preprocessado foram salvos no diretório `./data/processed/`. Dados que serão utilizados pelo algoritmo para realizar as seleções de modelo, treinamentos, otimizações e avaliações finais do modelo. Abaixo segue um resumo da estrutura. 
+For the dataset `data.csv`, 9 variables showed importance compared to 7 variables for `data2.csv`. The respective training and test data for each preprocessed set were saved in the directory `./data/processed/`. These data will be used by the algorithm to perform model selections, training, optimizations, and final model evaluations. Below is a summary of the structure.
 
 * `data.csv`: 
     * X_data: 
@@ -53,17 +53,17 @@ Para o conjunto de dados `data.csv` 9 variáveis apresentaram destaque no grau d
         * X_train2_features.csv
         * X_test2_features.csv
 
-* Variável alvo: 
+* Target variable: 
     * y_train.csv
     * y_test.csv
 
-Com todos os conjuntos de dados previamente processados, iremos prosseguir para a construções dos modelos, seleções e suas avaliações.
+With all the previously processed datasets, we will proceed to building the models, selections, and their evaluations.
 
 ## Select Models
 
-Para realizarmos a seleção do modelo de acordo com cada agrupamento de dados, os que foram feito seleção de variáveis e os que permaneceram com todas as variáveis dado os dois sub conjunto de dados em `data.csv`e `data2.csv` será realizado a divisão e nomeado em dois grupos principais de modelos: Grupo Alpha para todos os dados referente a `data.csv` e Grupo  Beta para todos em `data2.csv`. 
+To perform model selection according to each data grouping, those that had variable selection and those that remained with all variables given the two subsets of data in `data.csv` and `data2.csv`, a division will be made and named into two main groups of models: Alpha Group for all data related to `data.csv` and Beta Group for all in `data2.csv`.
 
-Em todos os casos será aplicado a cross-validation sobre os dados de treinamento com avaliação sobre a métrica AUC scoring, utilizando o método k-fold com n_splits=10 para a lista de modelos a seguir: 
+In all cases, cross-validation will be applied to the training data with evaluation on the AUC scoring metric, using the k-fold method with n_splits=10 for the following list of models: 
 
 ```python
 models = [RandomForestClassifier, 
@@ -73,7 +73,7 @@ models = [RandomForestClassifier,
           xgb.XGBClassifier,
           SVC]
 ```
-Função para a aplicação da cross-validation:
+Function for applying cross-validation:
 
 ```python 
 def evaluate_models(models, X_train, y_train):
@@ -85,9 +85,9 @@ def evaluate_models(models, X_train, y_train):
               f"{s.mean():.3f} STD: {s.std():.2f}")
 ```
 
-A seguir segue os resultados de acordo com o agrupamento dos modelos Alpha e Beta:
+The following are the results according to the grouping of Alpha and Beta models:
 
-### Modelos grupo Alpha: 
+### Alpha group models:: 
 
 ```python
 # All data: X_train.
@@ -109,7 +109,7 @@ XGBClassifier          AUC: 0.982 STD: 0.02
 SVC                    AUC: 0.986 STD: 0.02
 ```
 
-### Modelos grupo Beta:
+### Beta group models:
 
 ```python
 # All data: X_train2
@@ -131,13 +131,13 @@ XGBClassifier          AUC: 0.988 STD: 0.01
 SVC                    AUC: 0.985 STD: 0.02
 ```
 
-Contudo, os modelos ensamble apresentaram bons desempenhos os praticamente todos os casos, os modelos que foram selecionados para treinamentos e otimizações de parametros foram: RandomForest, SVC e XGBC. A seguir apresentamos os parametros encontrados na otimização.
+However, the ensemble models showed good performance in practically all cases. The models that were selected for training and parameter optimization were: RandomForest, SVC and XGBC. Below we present the parameters found in the optimization.
 
 ## Traning models 
 
-Para a etapa de otimização dos parametros dos modelos, neste caso, utilizamos GridSearch, onde será criado um modelo para cada combinação de parametros e selecionado o melhor. A escolha de aplicar este método para esse caso foi pela simplicidade e também pelo tamanho dos dados disponíveis para treinamento. Observando que para modelos mais complexos com superiores quantidades de dados, outros métodos de otimização randomica passam a ser mais interessantes. 
+For the parameter optimization step of the models, in this case, we used GridSearch, where a model will be created for each combination of parameters and the best one will be selected. The choice of applying this method for this case was due to its simplicity and also due to the size of the data available for training. It should be noted that for more complex models with larger amounts of data, other methods of random optimization become more interesting.
 
-### Parametros para modelos Grupo Alpha: 
+### Parameters for Alpha Group models: 
 
 ```python
 # RandomForest to X_train
@@ -165,7 +165,7 @@ Model Saved: ../models/model_alpha_svc.pkl
 Model Saved: ../models/model_alpha_svc_feature.pkl
 ```
 
-### Parametros para modelos Grupo Beta:
+### Parameters for Beta Group models:
 
 ```python
 # RandomForest to X_train2
@@ -192,9 +192,41 @@ Model Saved: ../models/model_beta_svc.pkl
 {'C': 10, 'degree': 2, 'kernel': 'rbf'}
 Model Saved: ../models/model_beta_svc_feature.pkl
 ```
-Definido os melhores parametros para esse grupo de configurações, os modelos foram treinados com os dados de treino de seus respectivos grupos e salvos em suas versões .pkl. A seguir os modelos foram carregados e avaliados com seus respectivos dados de testes. 
+After defining the best parameters for this configuration group, the models were trained with their respective training data and saved in their .pkl versions. Next, the models were loaded and evaluated with their respective test data.
 
-## Evaluation models
+## Final Model
+
+All models were tested with their respective test data and compared using the AUC metric. The table below shows the results: 
+
+                          AUC
+    model_beta_xgb           0.947
+    model_alpha_svc          0.947
+    model_beta_rf            0.941
+    model_alpha_xgb          0.941
+    model_beta_svc           0.941
+    model_alpha_rf           0.934
+    model_alpha_svc_feature  0.934
+    model_beta_rf_feature    0.927
+    model_alpha_xgb_feature  0.927
+    model_beta_svc_feature   0.927
+    model_alpha_rf_feature   0.921
+    model_beta_xgb_feature   0.921
 
 
-# Conclusions
+- The `model_beta_xgb` and `model_alpha_svc` models have the best AUC scores. To select a model, I will choose `model_beta_xgb` because it has variable reduction due to the elimination of columns with high correlation.
+
+```python
+model_beta_xgb:
+              precision    recall  f1-score   support
+
+          B        0.99      0.92      0.95        75
+          M        0.86      0.97      0.92        39
+
+    accuracy                           0.94       114
+   macro avg       0.92      0.95      0.93       114
+weighted avg       0.94      0.94      0.94       114
+
+AUC:0.947
+```
+
+- In this problem, the worst error the model can make is to predict a cell as benign when it is actually malignant. The current recall rate is 97%, compared to a precision rate of 86%.

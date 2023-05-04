@@ -1,30 +1,30 @@
 # Exploratory Data Analysis:
 
 ## About the project and data: 
-O objetivo desse projeto foi realizar várias etapas de um projeto de ciencia de dados, passando pela etapa de análise exploratória, realizando o pré-processamento dos dados, realizar seleção de modelos, avaliar os modelos e selecionar o modelo final de classifição. Também teve como objetivo a implementação e utilização de um padrão de projeto para ciencia de dados embasado no projeto  cookiecutter data science project template.
+The objective of this project was to carry out several steps of a data science project, going through the exploratory analysis stage, performing data pre-processing, model selection, evaluating the models, and selecting the final classification model. It also aimed to implement and use a data science project pattern based on the cookiecutter data science project template.
 
-Os dados selecionados foram retirados do Kaggle ref: [source]('https://www.kaggle.com/datasets/erdemtaha/cancer-data'). Representam caratetisticas geométricas de células cancerígenas que foram classificados em benigina e malígina. 
+The selected data was taken from Kaggle ref: [source]('https://www.kaggle.com/datasets/erdemtaha/cancer-data'). They represent geometric characteristics of cancer cells that were classified as benign and malignant. 
 ## Struture data and some informations: 
 
-O conjunto original do dataset é composto por 30 colunas/caracteristicas e 570 registros. Todas as caracteristicas exceto a variável alvo `diagnosis` são variáveis numéricas contínuas. A seguir avaliaremos os dados ausentes e ou duplicações.  
+The original dataset consists of 30 columns/features and 570 records. All features except the target variable `diagnosis` are continuous numerical variables. Next, we will evaluate missing data and/or duplicates. 
 
 ### Missing Values and duplicated
 
-O conjunto de dados não possui valores ausentes ou valores duplicados, conforme observado na imagem abaixo. 
+The dataset has no missing values or duplicate values, as seen in the image below.
 
 <p align="center">
   <img src="figures/fig1-missing-values.png" width="700" height="400">
 </p>
 
-As variáveis id e Unnamed não são representativas para as análises e modelos, portanto serão excluidas. Para a variável alvo `diagnosis` será feito a mudança das classes pelo seguinte acordo:  
+The variables id and Unnamed are not representative for the analysis and models, therefore they will be excluded. For the target variable 'diagnosis', a change in the classes will be made according to the following agreement:
 * B = 0  
 * M = 1.
 
-Em seguida iremos avaliar os resumos estatísticos, distribuições e correlações dos dados. 
+Next, we will evaluate the statistical summaries, distributions, and correlations of the data.
 
 ### Summarize Statistics
 
-Os resumos estatisticos como média, desvio padrão e mediana podem ser observados conforme as imagens a seguir: 
+The statistical summaries such as mean, standard deviation, and median can be observed in the following images: 
 
 ```python
 summarize = data.describe()
@@ -45,10 +45,10 @@ summarize.T[14:30]
   <img src="figures/describe-14-30.png" width="700" height="300">
 </p>
 
-Podemos notar que há diferentes escalas entre os dados, como exemplo valores médios de 0.002 até um máximo de 880. Essas diferenças de escalas podem afetar a importancia que o modelo irá calcular cada variável, na etapa de pré-processamento será tratado essas diferenças para normalizar os dados. 
+We can notice that there are different scales among the data, for example, average values ranging from 0.002 up to a maximum of 880. These scale differences can affect the importance that the model will assign to each variable. In the pre-processing stage, these differences will be addressed by normalizing the data.
 
 ### Distributions
-Procurando realizar uma verificação rápida sobre as distribuições dos dados, realizamos o teste de Shapiro-Wilk para verificação de normalidade de cada distribuição. O código a seguir retorna somente as variáveis que falhamos em rejeitar h0= a distribuição da variável segue uma distribuição normal. 
+Looking to perform a quick check on the data distributions, we conducted the Shapiro-Wilk test to verify the normality of each distribution. The following code returns only the variables for which we failed to reject h0 = the variable's distribution follows a normal distribution. 
 
 ```python
 # Verify to all columns Shapiro-Wilk test, print just the variable that we can reject the H0: 
@@ -57,28 +57,28 @@ for col in data.columns:
     if p >= 0.05:
         print(f'{col}:p-value = {p:.6f}')
 ```
-Como podemos notar, não foi retornado nenhum valor. Portanto rejeitamos a hipotese de que os dados seguem uma distribuição normal. A seguir seguem os plots para as variáveis com os valores de simetria e curtose: 
+As we can see, no values were returned. Therefore, we reject the hypothesis that the data follows a normal distribution. The following are the plots for the variables with their corresponding skewness and kurtosis values: 
 
-* Simetria:
+* Skewness:
 
 <p align="center">
   <img src="figures/fig2-skewness.png" width="700" height="400">
 </p>
 
-* Curtosi:
+* Kurtosis:
 
 <p align="center">
   <img src="figures/fig3-kurtosis.png" width="700" height="400">
 </p>
 
-Para criar uma visualização da distribuição dos dados, como há muitas variáveis e também diferentes tipos de escalas, vamos dividir em grupos de semelhança de acordo com suas médias. Portanto iremos criar os seguintes grupos: 
+To create a visualization of the data distribution, since there are many variables and also different types of scales, we will divide them into groups of similarity according to their means. Therefore, we will create the following groups: 
 
     * Group A : 0 > mean <=1  
     * Group B : 1 > mean <=20  
     * Group C : 20 > mean <=100  
     * Group D : 100 > mean <= 1000 
 
-Segue o plot de violino para as variáveis a seguir: 
+Here is the violin plot for the following variables: 
 
 <p align="center">
   <img src="figures/features-violin-plot.png" width="500" height="900">
@@ -90,17 +90,17 @@ Segue o plot de violino para as variáveis a seguir:
   <img src="figures/heat-map-correlations.png" width="550" height="450">
 </p>
 
-O mapa de calor mostra que há a presença de várias colunas com alto grau de correlação. Esse fator gera redundancia de informação ou multicolinearidade o que prejudica a identificação de importancia das variáveis para predizer o alvo quando treinado o modelo. O que pode explicar a alta correção entre as variáveis é devido praticamente todas serem derivadas de uma caracteristica geométrica da célula. 
+The heat map shows the presence of several columns with a high degree of correlation. This factor generates information redundancy or multicollinearity, which impairs the identification of variable importance to predict the target when training the model. What can explain the high correlation between variables is that practically all of them are derived from one geometric characteristic of the cell.
 
-Para uma representação gráfica das relações entre as multiplas variáveis temos o plot RadViz: 
+For a graphical representation of the relationships between multiple variables, we have the RadViz plot:
 
 <p align="center">
   <img src="figures/radviz-30-features.png" width="900" height="500">
 </p>
 
-Com o objetivo de reduzir essa multicolinearidade, iremos realizar o filtro para colunas que possuem alta correção, acima de 0.95 e excluir a colinearidade escolhendo somente um grupo de colunas para permanecer no conjunto de dados. Será criado um novo dataset para essa transformação e ficará salvo em data2 para etapas posteriores de preprocessamento e treinamento de modelos. 
+With the aim of reducing this multicollinearity, we will perform filtering for columns that have high correlation, above 0.95, and exclude collinearity by choosing only one group of columns to remain in the dataset. A new dataset will be created for this transformation and saved in data2 for later preprocessing and model training steps. 
 
-A seguir as colunas que apresentam uma alta taxa de correlação: 
+Next are the columns that present a high correlation rate:
 
 ```python
 correleted_columns = correlated_columns(data.drop('diagnosis', axis=1))
@@ -129,16 +129,16 @@ correleted_columns
 data2 = data.drop(correleted_columns.level_1.unique(), axis=1)
 ```
 
-Portanto ficamos com dois modelos de dados para a etapa de pre-processamento e treinamento dos modelos. Os datasets que sofreram transformações ficaram salvos no diretório `./data/interim`. 
-  * `data.csv`: Não contém colunas `id`, alteração classes `diagnosis` para (0,1).  
-  * `data2.csv`: Cópia de `data.csv` com a exclusão de colunas com altas correlações.   
+Therefore, we have two data models for the preprocessing and model training stage. The datasets that underwent transformations were saved in the directory `./data/interim`.
+  * `data.csv`: Does not contain `id` columns, changes classes `diagnosis` to (0,1).
+  * `data2.csv`: Copy of `data.csv` with exclusion of columns with high correlations.  
 
-### Sobre o balanceamento de classe variável alvo: 
+### About balancing the target variable class:
 
-Para verificação do balanço de classe na variável alvo temos: 
+To check the class balance in the target variable we have:
 
 <p align="center">
   <img src="figures/balance_diagnosis.png" width="500" height="400">
 </p>
 
-# END
+## End.
