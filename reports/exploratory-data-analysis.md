@@ -141,4 +141,4 @@ To check the class balance in the target variable we have:
   <img src="figures/balance_diagnosis.png" width="500" height="400">
 </p>
 
-## End.
+<button><a href="../.README.md" class="btn btn-primary" >Return Page</a></button>
