@@ -141,5 +141,5 @@ To check the class balance in the target variable we have:
   <img src="figures/balance_diagnosis.png" width="500" height="400">
 </p>
 
-<button><a href="https://github.com/sabinorsp/cancer_data_classification/tree/master" class="btn btn-primary" >Return Page</a></button> ______________________________________________________________________
-<button><a href="https://github.com/sabinorsp/cancer_data_classification/blob/master/reports/models.md" class="btn btn-primary" >Preprocessing-TraningModel</a></button>
+<button class="btn btn-primary"><a href="https://github.com/sabinorsp/cancer_data_classification/tree/master">Return Page</a></button> ______________________________________________________________________
+<button class="btn btn-primary"><a href="https://github.com/sabinorsp/cancer_data_classification/blob/master/reports/models.md">Preprocessing-TraningModel</a></button>
