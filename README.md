@@ -1,11 +1,11 @@
-cancer_data_classification
+# cancer_data_classification
 ==============================
 
 This project are about a construct a exploratory data analysis, preprocessing and training a classification model to preditic the cancer with benign  (B) and malignant (M). 
 
-[Exploratory Data Analysis](/reports/exploratory-data-analysis.md).
+[<h2>Exploratory Data Analysis</h2>](/reports/exploratory-data-analysis.md).
 
-[Preprocessing and Traning Model](/reports/models.md).
+[<h2>Preprocessing and Traning Model</h2>](/reports/models.md).
 
 Project Organization
 ------------
