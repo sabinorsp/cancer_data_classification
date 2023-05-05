@@ -230,3 +230,7 @@ AUC:0.947
 ```
 
 - In this problem, the worst error the model can make is to predict a cell as benign when it is actually malignant. The current recall rate is 97%, compared to a precision rate of 86%.
+
+
+<button><a href="https://github.com/sabinorsp/cancer_data_classification" class="btn btn-primary" >Return Page</a></button>_____________________________________________________________________________________________________________
+<button><a href="https://github.com/sabinorsp/cancer_data_classification/blob/master/reports/exploratory-data-analysis.md" class="btn btn-primary" >Exploratory Data Analysis</a></button>
